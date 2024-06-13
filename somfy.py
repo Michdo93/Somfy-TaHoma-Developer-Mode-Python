@@ -108,9 +108,30 @@ def delete_token():
     else:
         print("Failed to delete token.")
 
+# Funktion zum Abrufen aller Geräte
+def get_devices():
+    url = "https://{}/enduser-mobile-web/enduserAPI/setup/devices".format(variables["url"])
+    headers = {
+        "Content-Type": "application/json",
+        "Cookie": "JSESSIONID={}".format(variables["sessionid"])
+    }
+    response = requests.get(url, headers=headers)
+
+    print("Get devices response status code:", response.status_code)
+    print("Get devices response text:", response.text)
+
+    if response.status_code == 200:
+        devices = response.json()
+        print("Devices retrieved successfully.")
+        for device in devices:
+            print(json.dumps(device, indent=2))
+    else:
+        print("Failed to retrieve devices.")
+
 # Durchführen der Aktionen
 login()
 generate_token()
 activate_token()
 get_tokens()
 delete_token()
+get_devices()
